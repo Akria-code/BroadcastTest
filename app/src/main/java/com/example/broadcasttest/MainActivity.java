@@ -16,7 +16,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver, intentFilter);   //调用registerReceiver()方法进行注册
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
     /*
     * 定义一个内部类NetworkChangeReceiver，重写父类onReceive，每当网络状态发生变化时
     *onReceive（）方法就会得到执行，这里只是简单的用Toast提示了一段文本信息。
